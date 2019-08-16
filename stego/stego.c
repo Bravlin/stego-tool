@@ -1,32 +1,11 @@
 #include "stego.h"
 
-#define mask8(shift) (shift >= 0) ? 0b11111111 >> shift : 0b11111111 << (shift * -1)
-#define mask32(shift) (shift >= 0) ? 0xFF >> shift : 0xFF << (shift * -1)
 #define BITS8 0b11111111 
-
-/*
-unsigned char mask8(char shift)
-{
-    if (shift > 0)
-        return 0b11111111 >> shift;
-    else
-        return 0b11111111 << (shift * -1);
-}
-*/
-
-/*
-uint32_t mask32(char shift)
-{
-    if (shift > 0)
-        return 0xFF >> shift;
-    else
-        return 0xFF << (shift * -1);
-}
-*/
 
 int hide_text(uint32_t* pixels, unsigned int pixel_size, uint32_t x, uint32_t y, uint8_t k, unsigned char* text)
 {
     int8_t i;
+    uint8_t shift;
     uint8_t pixels_per_char;
     uint8_t rest;
     uint8_t to_hide = 0;
@@ -54,16 +33,18 @@ int hide_text(uint32_t* pixels, unsigned int pixel_size, uint32_t x, uint32_t y,
     rest = 8 % k;
     do
     {
+        shift = 8 - k;
         for (i = pixels_per_char - 1; i >= 0; i--)
         {
             pixels[pixel] &= BITS8 << k;
-            pixels[pixel] |= (text[to_hide] >> (i * k)) & ~(BITS8 << k);
+            pixels[pixel] |= (text[to_hide] >> shift) & ~(BITS8 << k);
             pixel++;
+            shift -= k;
         }
         if (rest > 0)
         {
             pixels[pixel] &= BITS8 << rest;
-            pixels[pixel] |= (text[to_hide] >> (i * rest)) & ~(BITS8 << rest);
+            pixels[pixel] |= text[to_hide] & ~(BITS8 << rest);
             pixel++;
         }
         to_hide++;
@@ -74,6 +55,8 @@ int hide_text(uint32_t* pixels, unsigned int pixel_size, uint32_t x, uint32_t y,
 int get_text(uint32_t* pixels, uint8_t k, unsigned char* text)
 {
     int8_t i;
+    uint8_t shift;
+    uint8_t mask;
     int8_t to_get = -1;
     uint8_t pixels_per_char;
     uint8_t rest;
@@ -85,11 +68,15 @@ int get_text(uint32_t* pixels, uint8_t k, unsigned char* text)
     do
     {
         to_get++;
-        hidden_char &= ~(BITS8);
+        mask = BITS8;
+        hidden_char &= ~(mask);
+        shift = 8 - k;
         for (i = pixels_per_char - 1; i >= 0; i--)
         {
-            hidden_char |= (pixels[pixel] << (i * k)) & (BITS8 >> (pixels_per_char - 1 - i)); 
+            hidden_char |= (pixels[pixel] << shift) & mask; 
             pixel++;
+            shift -= k;
+            mask >>= k;
         }
         if (rest > 0)
         {
