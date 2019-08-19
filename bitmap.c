@@ -60,7 +60,7 @@ int set_pixels(char *filename, uint32_t *pixels)
     for (j = 0; j < y; j++)
     {
         for (i = 0; i < x; i++)
-            write(fd, pixels + x * y - 1 - j * x - i, pixel_bytes); // put a pixel
+            write(fd, pixels + j * x + i, pixel_bytes); // put a pixel
         read(fd, buff, padding); // discard padding
     }
 }
