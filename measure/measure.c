@@ -29,7 +29,7 @@ float mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint3
 float psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
 {
     float return_value, mse_value = mse(original_image, stego_image, width, height);
-    uint32_t max_value = 0b0, i, image_size = width * height;
+    uint32_t max_value = 0b0, i = 0, image_size = width * height;
 
     while (i < image_size && max_value < MAX_PIXEL_VALUE)
     {
