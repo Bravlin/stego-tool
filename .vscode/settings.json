@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "measure.h": "c",
-        "string.h": "c",
-        "stdint.h": "c"
-    }
-}
