@@ -1,8 +1,8 @@
 #include "plot.h"
 
-//#define ROOT_DIRECTORY "/home/Desktop/"
+#define WORK_DIRECTORY "/home/sebastian/Desktop/"
 
-/** 
+/** Save the graph image in the WORK_DIRECTORY
  * @param x_value : x values
  * @param y_value : y values
  * @param count : number of value pairs
@@ -19,7 +19,12 @@ void plot(float *x_value, int *y_value, int count, char *x_label, char *y_label,
     char *xlabel_suffix = "set xlabel \'";
     char *ylabel_suffix = "set ylabel \'";
     char aux[500];
-    FILE *temp_file = fopen("data.temp", "w");
+    char command_filename[150];
+    char data_filename[150];
+
+    strcpy(data_filename, WORK_DIRECTORY);
+    strcat(data_filename, "data.temp");
+    FILE *temp_file = fopen(data_filename, "w");
 
     for (i = 0; i < count; i++)
     {
@@ -27,7 +32,10 @@ void plot(float *x_value, int *y_value, int count, char *x_label, char *y_label,
     }
 
     fclose(temp_file);
-    FILE *commands_file = fopen("gnuplot-commands.txt", "w");
+
+    strcpy(command_filename, WORK_DIRECTORY);
+    strcat(command_filename, "gnuplot-commands.txt");
+    FILE *commands_file = fopen(command_filename, "w");
     fprintf(commands_file, "set terminal jpeg\n");
     strcpy(aux, title_suffix);
     strcat(aux, title);
@@ -43,13 +51,15 @@ void plot(float *x_value, int *y_value, int count, char *x_label, char *y_label,
     fprintf(commands_file, "%s", aux);
     strcpy(aux, "plot 'data.temp' with linespoints ls 1");
     fprintf(commands_file, "%s", aux);
-    fclose(commands_file);
-
     strcpy(aux, "gnuplot ");
     strcat(aux, "gnuplot-commands.txt > ");
+    strcat(aux, WORK_DIRECTORY);
     strcat(aux, output_filename);
     strcat(aux, file_ext);
-    printf("%s\n", aux);
+
+    fclose(commands_file);
+    remove(data_filename);
+    remove(command_filename);
     system(aux);
 }
 

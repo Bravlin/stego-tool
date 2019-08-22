@@ -1,6 +1,5 @@
-#include <stdint.h>
-#include <math.h>
 #include "measure.h"
+
 #define MAX_PIXEL_VALUE 0b111111111111111111111111
 #define k1 0.01
 #define k2 0.03
@@ -10,7 +9,8 @@
 float mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t heigth)
 {
     int i, j;
-    int aux_1, aux_2 = 0, return_value;
+    int aux_1, aux_2 = 0;
+    float return_value;
 
     for (i = 0; i < heigth; i++)
     {
@@ -77,5 +77,6 @@ float ssim(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint
     structure = (covar_xy + c3) / (var_x * var_y + c3);
 
     return_value = luminance * constrast * structure;
+
     return return_value;
 }
