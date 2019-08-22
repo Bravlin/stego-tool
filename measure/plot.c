@@ -4,11 +4,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define WORK_DIRECTORY "/home/sebastian/Desktop/"
 #define DATA_FILENAME "data.temp"
 #define COMMANDS_FILENAME "gnuplot-commands.temp"
 
-/** Save the graph image in the WORK_DIRECTORY
+/**
  * @param x_value : x values
  * @param y_value : y values
  * @param count : number of value pairs
@@ -26,7 +25,6 @@ void plot(float *x_value, int *y_value, int count, char *x_label, char *y_label,
     char *ylabel_suffix = "set ylabel \'";
     char aux[500];
 
-    chdir(WORK_DIRECTORY);
     FILE *temp_file = fopen(DATA_FILENAME, "w");
 
     for (i = 0; i < count; i++)
