@@ -7,11 +7,11 @@
 #define L 255
 
 /* Mean Squared Error */
-float mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
+double mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
 {
     int i, j;
     int aux_1, aux_2 = 0;
-    float return_value;
+    double return_value;
 
     for (i = 0; i < height; i++)
     {
@@ -26,9 +26,9 @@ float mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint3
 }
 
 /* Peak Signal-to-Noise Ratio */
-float psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
+double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
 {
-    float return_value, mse_value = mse(original_image, stego_image, width, height);
+    double return_value, mse_value = mse(original_image, stego_image, width, height);
     uint32_t max_value = 0b0, i = 0, image_size = width * height;
 
     while (i < image_size && max_value < MAX_PIXEL_VALUE)
@@ -43,9 +43,9 @@ float psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint
 }
 
 /* Structural Similarity */
-float ssim(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
+double ssim(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
 {
-    float return_value, luminance, constrast, structure, c1, c2, c3, mu_x = 0, mu_y = 0, var_x = 0, var_y = 0, covar_xy = 0;
+    double return_value, luminance, constrast, structure, c1, c2, c3, mu_x = 0, mu_y = 0, var_x = 0, var_y = 0, covar_xy = 0;
     uint32_t i, image_size = width * height;
 
     c1 = pow(k1 * L, 2);

@@ -16,7 +16,7 @@
  * @param title : graph title
  * @param output_filename : name for the output file
  */
-void plot(float *x_value, int *y_value, int count, char *x_label, char *y_label, char *title, char *output_filename)
+void plot(double *x_value, int *y_value, int count, char *x_label, char *y_label, char *title, char *output_filename)
 {
     int i;
     char *file_ext = ".jpeg ";
