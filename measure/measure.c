@@ -1,4 +1,5 @@
 #include "measure.h"
+#include <math.h>
 
 #define MAX_PIXEL_VALUE 0b111111111111111111111111
 #define k1 0.01
