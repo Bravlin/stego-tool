@@ -30,9 +30,9 @@ int main(int argc, char **argv)
         copy_pixels(pixels, old_pixels, x, y);
         hide_text(text, x, y, k, pixels);
         set_pixels(img_file, pixels);
-        printf("MSE = %f\n", mse(old_pixels, pixels, x, y));
-        printf("PSNR = %f\n", psnr(old_pixels, pixels, x, y));
-        printf("SSIM = %f\n", ssim(old_pixels, pixels, x, y));
+        printf("MSE = %Lf\n", mse(old_pixels, pixels, x, y));
+        printf("PSNR = %Lf\n", psnr(old_pixels, pixels, x, y));
+        printf("SSIM = %Lf\n", ssim(old_pixels, pixels, x, y));
     }
 }
 
