@@ -63,22 +63,3 @@ void plot(float *x_value, int *y_value, int count, char *x_label, char *y_label,
     remove(DATA_FILENAME);
     remove(COMMANDS_FILENAME);
 }
-
-int main()
-{
-    float x[10];
-    int y[10];
-    int N = 10;
-    int i;
-
-    for (i = 0; i < N; i++)
-    {
-        x[i] = (i * 2);
-        y[i] = (i / 2);
-    }
-
-    plot(x, y, N, "valores x", "valores y", "MSE", "mse");
-    plot(x, y, N, "valores x", "valores y", "PSNR", "psnr");
-    plot(x, y, N, "valores x", "valores y", "SSIM", "ssim");
-    return 0;
-}
