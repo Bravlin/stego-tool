@@ -15,9 +15,8 @@ float mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint3
 
     for (i = 0; i < height; i++)
     {
-        j = 0;
         aux_1 = 0;
-        for (i = 0; j < width; j++)
+        for (j = 0; j < width; j++)
             aux_1 += pow(original_image[i * width + j] - stego_image[i * width + j], 2);
         aux_2 += aux_1;
     }
