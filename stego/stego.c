@@ -1,6 +1,7 @@
 #include "stego.h"
 
 #define BITS8 0b11111111
+#define BITS32 0xFFFFFFFF
 #define LAST_BIT 0b00000001
 #define CHAR_SIZE 8
 #define MAX_TEXT_SIZE 256
@@ -11,11 +12,11 @@ void hide_char(unsigned char c, uint8_t k, uint32_t* pixels, uint64_t* pixel)
     while (shift > k)
     {
         shift -= k;
-        pixels[*pixel] &= BITS8 << k;
+        pixels[*pixel] &= BITS32 << k;
         pixels[*pixel] |= (c >> shift) & ~(BITS8 << k);
         (*pixel)++;
     }
-    pixels[*pixel] &= BITS8 << shift;
+    pixels[*pixel] &= BITS32 << shift;
     pixels[*pixel] |= c & ~(BITS8 << shift);
     (*pixel)++;
 }
@@ -77,7 +78,7 @@ int hide_text(const unsigned char* text, uint32_t x, uint32_t y, uint8_t k, uint
     // Hides k within the first 3 pixels
     for (i = 2; i >= 0; i--)
     {
-        pixels[pixel] &= 0b11111110;
+        pixels[pixel] &= 0xFFFFFFFE;
         pixels[pixel] |= ((k - 1) >> i) & LAST_BIT;
         pixel++; 
     }
