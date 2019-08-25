@@ -26,7 +26,7 @@ int get_pixels(char *filename, uint32_t *pixels, uint32_t *x, uint32_t *y, uint1
     if (*pixel_size < 8) return 0;
     read(fd, buff, offset - 30); // discard bytes until the pixel data
     pixel_bytes = *pixel_size / 8;
-    padding = ((*x) * (*pixel_bytes)) % 4;
+    padding = ((*x) * pixel_bytes) % 4;
     for (j = 0; j < *y; j++)
     {
         for (i = 0; i < *x; i++)
