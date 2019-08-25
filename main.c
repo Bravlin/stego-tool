@@ -3,6 +3,7 @@
 #include "stego/stego.h"
 #include "bitmap/bitmap.h"
 #include "measure/measure.h"
+#include "measure/plot.h"
 
 #define IMG_MAX_SIZE 2073600
 
@@ -39,20 +40,34 @@ int main(int argc, char **argv)
     }
     else if (action == 'p' && argc == 3)
     {
-        char text[256], hid_file[256];
+        char text[256], output[256];
+        int k_value[8];
+        long double mse_value[8], psnr_value[8], ssim_value[8];
+        int count;
         strcpy(text, LOREN_IPSUM);
         uint32_t *old_pixels = (uint32_t *) malloc(sizeof(uint32_t) * IMG_MAX_SIZE);
-        get_pixels(img_file, pixels, &x, &y, &pixel_size);
-        copy_pixels(pixels, old_pixels, x, y);
+        get_pixels(img_file, old_pixels, &x, &y, &pixel_size);
         for (uint8_t k = 1; k <= 8; k++)
         {
-            hide_text(text, x, y, k, old_pixels);
-            strcpy(hid_file, img_file);
-            set_pixels(hid_file, pixels);
-            printf("MSE = %Lf\n", mse(old_pixels, pixels, x, y));
-            printf("PSNR = %Lf\n", psnr(old_pixels, pixels, x, y));
-            printf("SSIM = %Lf\n", ssim(old_pixels, pixels, x, y));
+            copy_pixels(old_pixels, pixels, x, y);
+            hide_text(text, x, y, k, pixels);
+            k_value[k] = k;
+            mse_value[k] = mse(old_pixels, pixels, x, y);
+            psnr_value[k] = psnr(old_pixels, pixels, x, y);
+            ssim_value[k] = ssim(old_pixels, pixels, x, y);
         }
+        strcpy(output, img_file);
+        output[strlen(output) - 4] = '\0'; // remove extension
+        strcat(output, "_mse.png");
+        plot(k_value, mse_value, 8, "k", "MSE", "MSE vs k", output);
+        strcpy(output, img_file);
+        output[strlen(output) - 4] = '\0'; // remove extension
+        strcat(output, "_psnr.png");
+        plot(k_value, psnr_value, 8, "k", "PSNR", "PSNR vs k", output);
+        strcpy(output, img_file);
+        output[strlen(output) - 4] = '\0'; // remove extension
+        strcat(output, "_ssim.png");
+        plot(k_value, ssim_value, 8, "k", "SSIM", "SSIM vs k", output);
     }
 }
 
