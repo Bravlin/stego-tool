@@ -59,16 +59,44 @@ int main(int argc, char **argv)
         }
         strcpy(output, img_file);
         output[strlen(output) - 4] = '\0'; // remove extension
-        strcat(output, "_mse");
+        strcat(output, "_mse_k");
         plot(k_value, mse_value, count, "k", "MSE", "MSE vs k", output);
         strcpy(output, img_file);
         output[strlen(output) - 4] = '\0'; // remove extension
-        strcat(output, "_psnr");
+        strcat(output, "_psnr_k");
         plot(k_value, psnr_value, count, "k", "PSNR", "PSNR vs k", output);
         strcpy(output, img_file);
         output[strlen(output) - 4] = '\0'; // remove extension
-        strcat(output, "_ssim");
+        strcat(output, "_ssim_k");
         plot(k_value, ssim_value, count, "k", "SSIM", "SSIM vs k", output);
+        count = 0;
+        for (int t = 1; t <= 255; t++)
+        {
+            uint8_t k = 8;
+            strcpy(text, LOREN_IPSUM);
+            text[t] = '\0';
+            copy_pixels(old_pixels, pixels, x, y);
+            hide_text(text, x, y, k, pixels);
+            t_value[count++] = t;
+            mse_value[count] = mse(pixels, old_pixels, x, y);
+            psnr_value[count] = psnr(pixels, old_pixels, x, y);
+            ssim_value[count] = ssim(pixels, old_pixels, x, y);
+            printf("|t| = %d | MSE = %Lf | PSNR = %Lf | SSIM = %Lf\n", t, mse_value[count], psnr_value[count], ssim_value[count]);
+        }
+        strcpy(output, img_file);
+        output[strlen(output) - 4] = '\0'; // remove extension
+        strcat(output, "_mse_t");
+        plot(t_value, mse_value, count, "|t|", "MSE", "MSE vs |t|", output);
+        strcpy(output, img_file);
+        output[strlen(output) - 4] = '\0'; // remove extension
+        strcat(output, "_psnr_t");
+        plot(t_value, psnr_value, count, "|t|", "PSNR", "PSNR vs |t|", output);
+        strcpy(output, img_file);
+        output[strlen(output) - 4] = '\0'; // remove extension
+        strcat(output, "_ssim_t");
+        plot(t_value, ssim_value, count, "|t|", "SSIM", "SSIM vs |t|", output);
+        printf(output);
+        fflush(stdout);
     }
 }
 
