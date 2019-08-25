@@ -29,7 +29,7 @@ void plot(int *x_value, long double *y_value, int count, char *x_label, char *y_
 
     for (i = 0; i < count; i++)
     {
-        fprintf(temp_file, "%lf %d \n", x_value[i], y_value[i]);
+        fprintf(temp_file, "%d %lf \n", x_value[i], y_value[i]);
     }
 
     fclose(temp_file);
