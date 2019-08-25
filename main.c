@@ -7,8 +7,6 @@
 
 #define IMG_MAX_SIZE 2073600
 
-#define LOREN_IPSUM "Lorem ipsum dolor sit amet consectetur adipiscing elit sodales integer, taciti odio vivamus eros sociis augue purus eget, nullam tempor nec parturient ut ornare habitasse dictumst. Orci viverra lectus hac facilisis mi et habitasse, augue erat ullamcorper."
-
 void copy_pixels(uint32_t *pixels, uint32_t *copy, uint32_t x, uint32_t y);
 
 int main(int argc, char **argv)
@@ -38,19 +36,20 @@ int main(int argc, char **argv)
         printf("PSNR = %Lf\n", psnr(old_pixels, pixels, x, y));
         printf("SSIM = %Lf\n", ssim(old_pixels, pixels, x, y));
     }
-    else if (action == 'p' && argc == 3)
+    else if (action == 'p' && argc == 5)
     {
+        char *text_const = argv[3];
+        uint8_t k_const = argv[4][0] - '0';
         char text[256], output[256];
         int k_value[8], t_value[256];
         long double mse_value[8], psnr_value[8], ssim_value[8];
         int count = 0;
-        strcpy(text, LOREN_IPSUM);
         uint32_t *old_pixels = (uint32_t *) malloc(sizeof(uint32_t) * IMG_MAX_SIZE);
         get_pixels(img_file, old_pixels, &x, &y, &pixel_size);
         for (uint8_t k = 1; k <= 8; k++)
         {
             copy_pixels(old_pixels, pixels, x, y);
-            hide_text(text, x, y, k, pixels);
+            hide_text(text_const, x, y, k, pixels);
             k_value[count++] = k;
             mse_value[count] = mse(pixels, old_pixels, x, y);
             psnr_value[count] = psnr(pixels, old_pixels, x, y);
@@ -72,11 +71,10 @@ int main(int argc, char **argv)
         count = 0;
         for (int t = 1; t <= 255; t++)
         {
-            uint8_t k = 8;
-            strcpy(text, LOREN_IPSUM);
+            strcpy(text, text_const);
             text[t] = '\0';
             copy_pixels(old_pixels, pixels, x, y);
-            hide_text(text, x, y, k, pixels);
+            hide_text(text, x, y, k_const, pixels);
             t_value[count++] = t;
             mse_value[count] = mse(pixels, old_pixels, x, y);
             psnr_value[count] = psnr(pixels, old_pixels, x, y);
@@ -95,8 +93,6 @@ int main(int argc, char **argv)
         output[strlen(output) - 4] = '\0'; // remove extension
         strcat(output, "_ssim_t");
         plot(t_value, ssim_value, count, "|t|", "SSIM", "SSIM vs |t|", output);
-        printf(output);
-        fflush(stdout);
     }
 }
 
