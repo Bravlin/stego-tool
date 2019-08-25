@@ -16,7 +16,7 @@
  * @param title : graph title
  * @param output_filename : name for the output file
  */
-void plot(long double *x_value, int *y_value, int count, char *x_label, char *y_label, char *title, char *output_filename)
+void plot(int *x_value, long double *y_value, int count, char *x_label, char *y_label, char *title, char *output_filename)
 {
     int i;
     char *file_ext = ".jpeg ";
@@ -29,7 +29,7 @@ void plot(long double *x_value, int *y_value, int count, char *x_label, char *y_
 
     for (i = 0; i < count; i++)
     {
-        fprintf(temp_file, "%Lf %d \n", x_value[i], y_value[i]);
+        fprintf(temp_file, "%d %Lf \n", x_value[i], y_value[i]);
     }
 
     fclose(temp_file);
