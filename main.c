@@ -42,7 +42,7 @@ int main(int argc, char **argv)
         uint8_t k_const = argv[4][0] - '0';
         char text[256], output[256];
         int k_value[8], t_value[256];
-        long double mse_value[8], psnr_value[8], ssim_value[8];
+        long double mse_value[256], psnr_value[256], ssim_value[256];
         int count = 0;
         uint32_t *old_pixels = (uint32_t *) malloc(sizeof(uint32_t) * IMG_MAX_SIZE);
         get_pixels(img_file, old_pixels, &x, &y, &pixel_size);
