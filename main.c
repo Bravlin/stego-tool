@@ -50,10 +50,10 @@ int main(int argc, char **argv)
         {
             copy_pixels(old_pixels, pixels, x, y);
             hide_text(text_const, x, y, k, pixels);
-            k_value[count++] = k;
+            k_value[count] = k;
             mse_value[count] = mse(pixels, old_pixels, x, y);
             psnr_value[count] = psnr(pixels, old_pixels, x, y);
-            ssim_value[count] = ssim(pixels, old_pixels, x, y);
+            ssim_value[count++] = ssim(pixels, old_pixels, x, y);
             printf("k = %d | MSE = %Lf | PSNR = %Lf | SSIM = %Lf\n", k, mse_value[count], psnr_value[count], ssim_value[count]);
         }
         strcpy(output, img_file);
@@ -75,10 +75,10 @@ int main(int argc, char **argv)
             text[t] = '\0';
             copy_pixels(old_pixels, pixels, x, y);
             hide_text(text, x, y, k_const, pixels);
-            t_value[count++] = t;
+            t_value[count] = t;
             mse_value[count] = mse(pixels, old_pixels, x, y);
             psnr_value[count] = psnr(pixels, old_pixels, x, y);
-            ssim_value[count] = ssim(pixels, old_pixels, x, y);
+            ssim_value[count++] = ssim(pixels, old_pixels, x, y);
             printf("|t| = %d | MSE = %Lf | PSNR = %Lf | SSIM = %Lf\n", t, mse_value[count], psnr_value[count], ssim_value[count]);
         }
         strcpy(output, img_file);
