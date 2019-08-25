@@ -69,7 +69,7 @@ int main(int argc, char **argv)
         strcat(output, "_ssim_k");
         plot(k_value, ssim_value, count, "k", "SSIM", "SSIM vs k", output);
         count = 0;
-        for (int t = 1; t <= 255; t++)
+        for (int t = 1; t <= strlen(text_const); t++)
         {
             strcpy(text, text_const);
             text[t] = '\0';
