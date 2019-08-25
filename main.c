@@ -33,7 +33,7 @@ int main(int argc, char **argv)
         hide_text(text, x, y, k, pixels);
         set_pixels(img_file, pixels);
         printf("MSE = %Lf\n", mse(old_pixels, pixels, x, y));
-        printf("PSNR = %Lf\n", psnr(old_pixels, pixels, x, y));
+        printf("PSNR = %Lf\n", psnr(old_pixels, pixels, x, y, pixel_size));
         printf("SSIM = %Lf\n", ssim(old_pixels, pixels, x, y));
     }
     else if (action == 'p' && argc == 5)
@@ -52,7 +52,7 @@ int main(int argc, char **argv)
             hide_text(text_const, x, y, k, pixels);
             k_value[count] = k;
             mse_value[count] = mse(old_pixels, pixels, x, y);
-            psnr_value[count] = psnr(old_pixels, pixels, x, y);
+            psnr_value[count] = psnr(old_pixels, pixels, x, y, pixel_size);
             ssim_value[count] = ssim(old_pixels, pixels, x, y);
             printf("k = %d | MSE = %Lf | PSNR = %Lf | SSIM = %Lf\n", k, mse_value[count], psnr_value[count], ssim_value[count]);
             count++;
@@ -78,7 +78,7 @@ int main(int argc, char **argv)
             hide_text(text, x, y, k_const, pixels);
             t_value[count] = t;
             mse_value[count] = mse(old_pixels, pixels, x, y);
-            psnr_value[count] = psnr(old_pixels, pixels, x, y);
+            psnr_value[count] = psnr(old_pixels, pixels, x, y, pixel_size);
             ssim_value[count] = ssim(old_pixels, pixels, x, y);
             printf("|t| = %d | MSE = %Lf | PSNR = %Lf | SSIM = %Lf\n", t, mse_value[count], psnr_value[count], ssim_value[count]);
             count++;

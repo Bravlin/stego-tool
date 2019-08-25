@@ -25,7 +25,7 @@ long double mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width,
 }
 
 /* Peak Signal-to-Noise Ratio */
-long double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height, uint32_t pixel_size)
+long double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height, uint16_t pixel_size)
 {
     long double return_value, mse_value = mse(original_image, stego_image, width, height);
     uint32_t actual_max_value = 0, max_value, i = 0, image_size = width * height;
@@ -33,7 +33,7 @@ long double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width
     max_value = pow(2, pixel_size) - 1;
     while (i < image_size && actual_max_value < max_value)
     {
-        if (original_image[i] > max_value)
+        if (original_image[i] > actual_max_value)
             actual_max_value = original_image[i];
         i++;
     }
