@@ -2,7 +2,8 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 int get_data(int fd, uint32_t *x, uint32_t *y, uint16_t *pixel_size, uint16_t *pixel_bytes, uint8_t *padding)
 {
@@ -48,11 +49,15 @@ int get_pixels(char *filename, uint32_t *pixels, uint32_t *x, uint32_t *y, uint1
 
 int set_pixels(char *filename, uint32_t *pixels)
 {
-    char buff[1024];
+    char buff[1024], filename_h;
     uint8_t padding;
     uint16_t pixel_size, pixel_bytes;
     uint32_t offset, x, y, i, j;
-    int fd = open(filename, O_RDWR);
+    strcpy(filename_h, filename);
+    filename_h[strlen(filename_h) - 4] = '\0'; // remove extension
+    strcat(filename_h, "_h.bmp");
+    system("cp %s %s", filename, filename_h);
+    int fd = open(filename_h, O_RDWR);
     if (fd < 0)
         return 0;
     if (!get_data(fd, &x, &y, &pixel_size, &pixel_bytes, &padding))
