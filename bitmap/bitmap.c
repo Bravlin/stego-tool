@@ -44,11 +44,13 @@ int set_pixels(char *filename, uint32_t *pixels)
     uint16_t pixel_size, pixel_bytes;
     uint32_t offset, x, y, i, j;
     int fd = open(filename, O_RDONLY);
+    if (fd < 0)
+        return 0;
     strcpy(filename_h, filename);
     filename_h[strlen(filename_h) - 4] = '\0'; // remove extension
     strcat(filename_h, "_h.bmp");
     int fd_h = open(filename_h, O_WRONLY);
-    if (fd < 0)
+    if (fd_h < 0)
         return 0;
     read(fd, buff, 2); // must be BM
     if (buff[0] != 'B' || buff[1] != 'M') return 0;
@@ -71,7 +73,7 @@ int set_pixels(char *filename, uint32_t *pixels)
     if (pixel_size < 8) return 0;
     write(fd_h, &pixel_size, 2); // copy the bits per pixel
     read(fd, buff, offset - 30); // get bytes until the pixel data
-    write(fd, buff, offset - 30); // copy bytes until the pixel data
+    write(fd_h, buff, offset - 30); // copy bytes until the pixel data
     pixel_bytes = pixel_size / 8;
     padding = (x * pixel_bytes) % 4;
     for (j = 0; j < y; j++)
@@ -79,10 +81,11 @@ int set_pixels(char *filename, uint32_t *pixels)
         for (i = 0; i < x; i++)
             write(fd_h, pixels + j * x + i, pixel_bytes); // put a pixel
         read(fd, buff, padding); // get padding
-        write(fd, buff, padding); // copy padding
+        write(fd_h, buff, padding); // copy padding
     }
     while (i = read(fd, buff, sizeof(buff)) > 0)
         write(fd_h, buff, i);
     close(fd);
+    close(fd_h);
     return 1;
 }
