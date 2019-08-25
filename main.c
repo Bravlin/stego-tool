@@ -41,9 +41,9 @@ int main(int argc, char **argv)
     else if (action == 'p' && argc == 3)
     {
         char text[256], output[256];
-        int k_value[8];
+        int k_value[8], t_value[256];
         long double mse_value[8], psnr_value[8], ssim_value[8];
-        int count;
+        int count = 0;
         strcpy(text, LOREN_IPSUM);
         uint32_t *old_pixels = (uint32_t *) malloc(sizeof(uint32_t) * IMG_MAX_SIZE);
         get_pixels(img_file, old_pixels, &x, &y, &pixel_size);
@@ -51,23 +51,24 @@ int main(int argc, char **argv)
         {
             copy_pixels(old_pixels, pixels, x, y);
             hide_text(text, x, y, k, pixels);
-            k_value[k] = k;
-            mse_value[k] = mse(old_pixels, pixels, x, y);
-            psnr_value[k] = psnr(old_pixels, pixels, x, y);
-            ssim_value[k] = ssim(old_pixels, pixels, x, y);
+            k_value[count++] = k;
+            mse_value[count] = mse(pixels, old_pixels, x, y);
+            psnr_value[count] = psnr(pixels, old_pixels, x, y);
+            ssim_value[count] = ssim(pixels, old_pixels, x, y);
+            printf("k = %d | MSE = %Lf | PSNR = %Lf | SSIM = %Lf\n", k, mse_value[count], psnr_value[count], ssim_value[count]);
         }
         strcpy(output, img_file);
         output[strlen(output) - 4] = '\0'; // remove extension
-        strcat(output, "_mse.png");
-        plot(k_value, mse_value, 8, "k", "MSE", "MSE vs k", output);
+        strcat(output, "_mse");
+        plot(k_value, mse_value, count, "k", "MSE", "MSE vs k", output);
         strcpy(output, img_file);
         output[strlen(output) - 4] = '\0'; // remove extension
-        strcat(output, "_psnr.png");
-        plot(k_value, psnr_value, 8, "k", "PSNR", "PSNR vs k", output);
+        strcat(output, "_psnr");
+        plot(k_value, psnr_value, count, "k", "PSNR", "PSNR vs k", output);
         strcpy(output, img_file);
         output[strlen(output) - 4] = '\0'; // remove extension
-        strcat(output, "_ssim.png");
-        plot(k_value, ssim_value, 8, "k", "SSIM", "SSIM vs k", output);
+        strcat(output, "_ssim");
+        plot(k_value, ssim_value, count, "k", "SSIM", "SSIM vs k", output);
     }
 }
 
