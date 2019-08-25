@@ -1,7 +1,6 @@
 #include "measure.h"
 #include <math.h>
 
-#define MAX_PIXEL_VALUE 0b111111111111111111111111
 #define k1 0.01
 #define k2 0.03
 #define L 255
@@ -26,12 +25,13 @@ long double mse(uint32_t *original_image, uint32_t *stego_image, uint32_t width,
 }
 
 /* Peak Signal-to-Noise Ratio */
-long double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height)
+long double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width, uint32_t height, uint32_t pixel_size)
 {
     long double return_value, mse_value = mse(original_image, stego_image, width, height);
-    uint32_t max_value = 0b0, i = 0, image_size = width * height;
+    uint32_t actual_max_value = 0, max_value, i = 0, image_size = width * height;
 
-    while (i < image_size && max_value < MAX_PIXEL_VALUE)
+    max_value = pow(2, pixel_size) - 1;
+    while (i < image_size && max_value < max_value)
     {
         if (original_image[i] > max_value)
             max_value = original_image[i];
