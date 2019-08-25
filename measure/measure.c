@@ -37,7 +37,7 @@ long double psnr(uint32_t *original_image, uint32_t *stego_image, uint32_t width
             actual_max_value = original_image[i];
         i++;
     }
-    return_value = 10 * log10(pow(max_value, 2) / mse_value);
+    return_value = 10 * log10(pow(actual_max_value, 2) / mse_value);
 
     return return_value;
 }
